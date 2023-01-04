@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: PyAnsoft
+Version: 0.0.1
+Summary: Python interaction with ANSYS Electronic Desktop 2016-2017.
+Home-page: 
+Author: Ratanak Phon
+Author-email: ratanak.elc@gmail.com
+License: MIT
+Keywords: pyansoft
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Education
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+License-File: LICENSE.txt
+
+# PyAnsoft
+
+Python interaction with ANSYS Electronic Desktop 2016-2017.
+
+
+Change Log
+================
+
+0.0.1 (04.01.2023)
+-------------------
+First Release

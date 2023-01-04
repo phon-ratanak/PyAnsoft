@@ -1,0 +1,27 @@
+CHANGELOG.txt
+LICENSE.txt
+MANIFEST.in
+README.md
+setup.py
+PyAnsoft.egg-info/PKG-INFO
+PyAnsoft.egg-info/SOURCES.txt
+PyAnsoft.egg-info/dependency_links.txt
+PyAnsoft.egg-info/top_level.txt
+examples/example_01_periodic structure.py
+examples/example_02_mestasurface_2D_simulation.py
+examples/test.py
+examples/test01.py
+pyansoft/__init__.py
+pyansoft/circuit.py
+pyansoft/desktop.py
+pyansoft/hfss.py
+pyansoft.egg-info/PKG-INFO
+pyansoft.egg-info/SOURCES.txt
+pyansoft.egg-info/dependency_links.txt
+pyansoft.egg-info/top_level.txt
+pyansoft/circuitlib/__init__.py
+pyansoft/hfsslib/__init__.py
+pyansoft/hfsslib/boundary.py
+pyansoft/hfsslib/excitation.py
+pyansoft/hfsslib/modeler.py
+pyansoft/hfsslib/operator.py
