@@ -8,14 +8,16 @@ from pyansoft.hfsslib.definition import Definition
 
 class HFSS:
     def __init__(
-            self,
-            project_name: str = None,
-            design_name: str = None,
-            solution_type: str = "DrivenModal",
-            specified_version: str = "2016.2",
-            # new_desktop_session: bool = True,
+        self,
+        project_name: str = None,
+        design_name: str = None,
+        solution_type: str = "DrivenModal",
+        specified_version: str = "2016.2",
+        # new_desktop_session: bool = True,
     ):
-        self.oDesktop = Desktop(project_name=project_name, version=specified_version).oDesktop
+        self.oDesktop = Desktop(
+            project_name=project_name, version=specified_version
+        ).oDesktop
 
         self.oProject = self.oDesktop.GetActiveProject()
         self.oProject.InsertDesign("HFSS", design_name, "", "")
@@ -38,20 +40,20 @@ class HFSS:
                 "NAME:AllTabs",
                 [
                     "NAME:ProjectVariableTab",
-                    [
-                        "NAME:PropServers",
-                        "ProjectVariables"
-                    ],
+                    ["NAME:PropServers", "ProjectVariables"],
                     [
                         "NAME:NewProps",
                         [
                             f"NAME:{key}",
-                            "PropType:=", "VariableProp",
-                            "UserDef:=", True,
-                            "Value:=", f"{value}"
-                        ]
-                    ]
-                ]
+                            "PropType:=",
+                            "VariableProp",
+                            "UserDef:=",
+                            True,
+                            "Value:=",
+                            f"{value}",
+                        ],
+                    ],
+                ],
             ]
             self.oProject = self.oDesktop.GetActiveProject()
             self.oProject.ChangeProperty(properties)
@@ -60,22 +62,20 @@ class HFSS:
                 "NAME:AllTabs",
                 [
                     "NAME:LocalVariableTab",
-                    [
-                        "NAME:PropServers",
-                        "LocalVariables"
-                    ],
+                    ["NAME:PropServers", "LocalVariables"],
                     [
                         "NAME:NewProps",
                         [
                             f"NAME:{key}",
-                            "PropType:=", "VariableProp",
-                            "UserDef:=", True,
-                            "Value:=", f"{value}"
+                            "PropType:=",
+                            "VariableProp",
+                            "UserDef:=",
+                            True,
+                            "Value:=",
+                            f"{value}",
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ]
             self.oDesign = self.oProject.GetActiveDesign()
             self.oDesign.ChangeProperty(properties)
-
-

@@ -12,6 +12,7 @@ class Definition:
     def clone_material(self):
         # print(dir(self.oDefinitionManager))
         self.clone_material.CloneMaterial()
+
     # def add_material(
     #     self,
     #     material_name: str = "new_material",
@@ -47,24 +48,26 @@ class Definition:
     #     ]
 
     #     [
-	# 	"NAME:Material3",
-	# 	"CoordinateSystemType:=", "Cartesian",
-	# 	[
-	# 		"NAME:AttachedData"
-	# 	],
-	# 	[
-	# 		"NAME:ModifierData"
-	# 	],
-	# 	"permittivity:="	, "2",
-	# 	"permeability:="	, "2",
-	# 	"conductivity:="	, "2",
-	# 	"dielectric_loss_tangent:=", "1",
-	# 	"magnetic_loss_tangent:=", "1",
-	# 	"saturation_mag:="	, "1tesla",
-	# 	"lande_g_factor:="	, "1",
-	# 	"delta_H:="		, "1A_per_meter",
-	# 	"mass_density:="	, "1",
-	# 	"delta_H_freq:="	, "1GHz"
-	# ]
 
-    #     return self.oDefinitionManager.AddMaterial(parameters)
+
+# 	"NAME:Material3",
+# 	"CoordinateSystemType:=", "Cartesian",
+# 	[
+# 		"NAME:AttachedData"
+# 	],
+# 	[
+# 		"NAME:ModifierData"
+# 	],
+# 	"permittivity:="	, "2",
+# 	"permeability:="	, "2",
+# 	"conductivity:="	, "2",
+# 	"dielectric_loss_tangent:=", "1",
+# 	"magnetic_loss_tangent:=", "1",
+# 	"saturation_mag:="	, "1tesla",
+# 	"lande_g_factor:="	, "1",
+# 	"delta_H:="		, "1A_per_meter",
+# 	"mass_density:="	, "1",
+# 	"delta_H_freq:="	, "1GHz"
+# ]
+
+#     return self.oDefinitionManager.AddMaterial(parameters)
