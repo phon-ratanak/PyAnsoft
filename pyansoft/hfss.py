@@ -3,6 +3,7 @@ from pyansoft.hfsslib.modeler import Modeler
 from pyansoft.hfsslib.operator import Operator, Analysis
 from pyansoft.hfsslib.boundary import Boundary
 from pyansoft.hfsslib.excitation import Excitation
+from pyansoft.hfsslib.definition import Definition
 
 
 class HFSS:
@@ -22,6 +23,8 @@ class HFSS:
         self.oDesign.SetSolutionType(solution_type)
 
         """ Import Class """
+        self.definition = Definition(self.oDesktop)
+
         self.modeler = Modeler(self.oDesign)
         self.operator = Operator(self.oDesign)
         self.analysis = Analysis(self.oDesign)
