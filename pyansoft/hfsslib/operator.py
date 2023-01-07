@@ -21,6 +21,140 @@ class Operator:
         """Get the position of the vertex with the given ID."""
         return self.oEditor.GetVertexPosition(vertex_id)
 
+    def subtract(self, blank_parts: List[str], tool_parts: List[str], 
+                keep_original: bool = False):
+        parameters = [
+            "NAME:Selections",
+            "Blank Parts:=", blank_parts,
+            "Tool Parts:=", tool_parts
+        ]
+        attributes = [
+            "NAME:SubtractParameters",
+            "KeepOriginals:=", keep_original
+        ]
+        
+        return self.oEditor.Subtract(parameters, attributes)
+    
+    def unite(self, object_name: List[str], keep_original: bool = False):
+        parameters = [
+            "NAME:Selections",
+            "Selections:=", ",".join(object_name)
+	    ]
+        attributes = [
+            "NAME:UniteParameters",
+            "KeepOriginals:=", keep_original
+        ]
+        
+        self.oEditor.Unite(parameters, attributes)
+        return object_name[0]
+    
+    def intersect(self, object_name: List[str], 
+                keep_original: bool = False):
+        parameters = [
+            "NAME:Selections",
+            "Selections:=", object_name
+	    ]
+        attributes = [
+            "NAME:IntersectParameters",
+            "KeepOriginals:=", keep_original
+        ]
+        
+        self.oEditor.Intersect(parameters, attributes)
+        return object_name[0]
+    
+    def imprint(self):
+        #ToDo 
+        pass
+
+    def move(self, object_name: List[str], position: List[str]):
+
+        param_01 = [
+            "NAME:Selections",
+            "Selections:=", object_name,
+            "NewPartsModelFlag:=", "Model"
+	    ]
+
+        param_02 = [
+            "NAME:TranslateParameters",
+            "TranslateVectorX:=", position[0],
+            "TranslateVectorY:=", position[1],
+            "TranslateVectorZ:=", position[2]
+	    ]
+        
+        return self.oEditor.Move(param_01, param_02)
+    
+    def rotate(self, object_name: List[str], rotate_angle: str = "90 deg", rotate_axis: str = "Z"):
+
+        param_01 = [
+            "NAME:Selections",
+            "Selections:="		, object_name,
+            "NewPartsModelFlag:="	, "Model"
+        ]
+
+        param_02 = [
+            "NAME:RotateParameters",
+            "RotateAxis:="		, "Z",
+            "RotateAngle:="		, rotate_angle
+        ]
+        
+        return self.oEditor.Rotate(param_01, param_02)
+    
+    def duplicate_along_line(self, object_name: List[str], 
+                            position: List[str], number_clone: int = 2, 
+                            unit = ""):
+        
+        param_01 = [
+            "NAME:Selections",
+            "Selections:="		, object_name,
+            "NewPartsModelFlag:="	, "Model"
+        ]
+        param_02 = [
+            "NAME:DuplicateToAlongLineParameters",
+            "CreateNewObjects:="	, True,
+            "XComponent:="		, f"{position[0]}{unit}",
+            "YComponent:="		, f"{position[1]}{unit}",
+            "ZComponent:="		, f"{position[2]}{unit}",
+            "NumClones:="		, f"{number_clone}"
+        ]
+        param_03 = [
+            "NAME:Options",
+            "DuplicateAssignments:=", False
+        ]
+        return self.oEditor.DuplicateAlongLine(param_01, param_02, param_03)
+
+    def duplicate_around_axis(self, object_name: List[str], 
+                            rotation_angle: str = "30deg",
+                            which_axis: str = "Z",
+                            number_clone: int = 2):
+        
+        param_01 = [
+            "NAME:Selections",
+            "Selections:="		, object_name,
+            "NewPartsModelFlag:="	, "Model"
+        ]
+        param_02 = [
+            "NAME:DuplicateAroundAxisParameters",
+            "CreateNewObjects:="	, True,
+            "WhichAxis:="		, which_axis,
+            "AngleStr:="		, rotation_angle,
+            "NumClones:="		, f"{number_clone}"
+        ]
+        param_03 = [
+            "NAME:Options",
+            "DuplicateAssignments:=", False
+        ]	
+        tuple_name = self.oEditor.DuplicateAroundAxis(param_01, param_02, param_03)
+        return tuple_name[0]
+    
+    def cover_line(self, object_name: str):
+        self.oEditor.CoverLines(
+        [
+            "NAME:Selections",
+            "Selections:="		, object_name,
+            "NewPartsModelFlag:="	, "Model"
+        ])
+        return object_name
+
     @staticmethod
     def get_center_point(A, B):
         import decimal
@@ -42,6 +176,10 @@ class Operator:
 
         # Convert the coordinates to strings for return
         return str(x), str(y), str(z)
+
+    """ Implement function """
+    def create_surface_from_line(self):
+        pass
 
 
 class Analysis:

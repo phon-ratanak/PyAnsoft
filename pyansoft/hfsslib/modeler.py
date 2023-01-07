@@ -8,7 +8,136 @@ class Modeler:
         self.oDesign = oDesign
         self.oEditor = oDesign.SetActiveEditor("3D Modeler")
 
-    """ 2D Objects =========================================="""
+    """ 1D Objects ============================================="""
+
+    def create_line(
+            self,
+            pl_point: List[float],
+            name: str = "Polyline",
+            unit: str = "",
+            color: str = "(143 175 143)",
+            transparency: float = 0,
+            material: str = "vacuum",
+            solve_inside: bool = True,
+
+    ):
+
+        pl_points = ["NAME:PolylinePoints"] + [
+            ["NAME:PLPoint",
+             "X:=", f"{p[0]}{unit}",
+             "Y:=", f"{p[1]}{unit}",
+             "Z:=", f"{p[2]}{unit}"] for p in pl_point
+        ]
+
+        pl_segments = ["NAME:PolylineSegments"] + [
+            ["NAME:PLSegment",
+            "SegmentType:=", "Line",
+            "StartIndex:=", s_index,
+            "NoOfPoints:=", 2] for s_index in range(len(pl_point)-1)
+        ]
+
+        pl_sections = [
+			"NAME:PolylineXSection",
+			"XSectionType:="	, "None",
+			"XSectionOrient:="	, "Auto",
+			"XSectionWidth:="	, "0mm",
+			"XSectionTopWidth:="	, "0mm",
+			"XSectionHeight:="	, "0mm",
+			"XSectionNumSegments:="	, "0",
+			"XSectionBendType:="	, "Corner"
+		]
+
+        parameters = [
+            "NAME:PolylineParameters",
+            "IsPolylineCovered:="	, True,
+            "IsPolylineClosed:="	, False, 
+            pl_points, pl_segments, pl_sections
+        ]
+        attributes = [
+            "NAME:Attributes",
+            "Name:=", name,
+            "Flags:=", "",
+            "Color:=", color,
+            "Transparency:=", transparency,
+            "PartCoordinateSystem:=", "Global",
+            "UDMId:=", "",
+            "MaterialValue:=", f"\"{material}\"",
+            "SolveInside:=", solve_inside
+        ]
+        
+        return self.oEditor.CreatePolyline(parameters, attributes)
+
+
+    def create_center_point_arc(
+            self,
+            pl_point: List[float],
+            arc_center: List[str],
+            arc_angle: str = "90deg",
+            arc_plane: str = "XY",
+            name: str = "Polyline",
+            unit: str = "",
+            color: str = "(143 175 143)",
+            transparency: float = 0,
+            material: str = "vacuum",
+            solve_inside: bool = True,
+
+    ):
+
+        pl_points = ["NAME:PolylinePoints"] + [
+            ["NAME:PLPoint",
+             "X:=", f"{p[0]}{unit}",
+             "Y:=", f"{p[1]}{unit}",
+             "Z:=", f"{p[2]}{unit}"] for p in pl_point
+        ]
+
+        pl_segments = [
+			"NAME:PolylineSegments",
+			[
+				"NAME:PLSegment",
+				"SegmentType:="		, "AngularArc",
+				"StartIndex:="		, 0,
+				"NoOfPoints:="		, 2,
+				"NoOfSegments:="	, "0",
+				"ArcAngle:="		, arc_angle,
+				"ArcCenterX:="		, f"{arc_center[0]}{unit}",
+				"ArcCenterY:="		, f"{arc_center[1]}{unit}",
+				"ArcCenterZ:="		, f"{arc_center[2]}{unit}",
+				"ArcPlane:="		, arc_plane
+			]
+		]
+
+        pl_sections = [
+			"NAME:PolylineXSection",
+			"XSectionType:="	, "None",
+			"XSectionOrient:="	, "Auto",
+			"XSectionWidth:="	, "0mm",
+			"XSectionTopWidth:="	, "0mm",
+			"XSectionHeight:="	, "0mm",
+			"XSectionNumSegments:="	, "0",
+			"XSectionBendType:="	, "Corner"
+		]
+
+        parameters = [
+            "NAME:PolylineParameters",
+            "IsPolylineCovered:="	, True,
+            "IsPolylineClosed:="	, False, 
+            pl_points, pl_segments, pl_sections
+        ]
+        attributes = [
+            "NAME:Attributes",
+            "Name:=", name,
+            "Flags:=", "",
+            "Color:=", color,
+            "Transparency:=", transparency,
+            "PartCoordinateSystem:=", "Global",
+            "UDMId:=", "",
+            "MaterialValue:=", f"\"{material}\"",
+            "SolveInside:=", solve_inside
+        ]
+
+        return self.oEditor.CreatePolyline(parameters, attributes)
+
+    """ 2D Objects ================================================="""
 
     def create_rectangle(
             self,
@@ -156,7 +285,9 @@ class Modeler:
         ]
         return self.oEditor.CreateEllipse(regular_ellipse, attributes)
 
-    """ 3D Objects ========================================== """
+    """ 3D Objects ========================== """
+
+
 
     def create_box(
             self,
