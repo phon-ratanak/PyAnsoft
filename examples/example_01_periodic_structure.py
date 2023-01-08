@@ -1,6 +1,6 @@
 import sys
-
-sys.path.append("../pyansoft")
+from os.path import dirname, abspath
+sys.path.append(dirname(dirname(abspath(__file__))))
 
 # import library
 from pyansoft import HFSS

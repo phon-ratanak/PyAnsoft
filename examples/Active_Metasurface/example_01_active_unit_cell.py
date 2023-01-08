@@ -1,28 +1,23 @@
 import sys
-sys.path.append('../pyansoft')
+from os.path import dirname, abspath
+sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
 
 # import library
 from pyansoft import HFSS
 
 hfss = HFSS(
-    project_name="Passive_Metasurface", 
-    design_name="UnitCell",
-    specified_version="2016.2",
+    project_name="Active_Metasurface", 
+    design_name="Unit_Cell",
 )
 
 """ Design Variables ============================= """
 """ ============================================== """
 
-hfss["p"] = "3.2 mm"
-hfss["pz"] = "10 mm"
-hfss["h"] = "0.125 mm"
-hfss["rc"] = "1.5 mm"
-hfss["w1"] = "0.8 mm"
-hfss["w2"] = "0.6 mm"
-hfss["d"] = "1.3 mm"
-hfss["alpha"] = "50 deg"
-hfss["beta"] = "20 deg"
-
+hfss["p"] = "7.5 mm"
+hfss["pz"] = "30 mm"
+hfss["t"] = "1 mm"
+hfss["rv"] = "0.1 mm"
+hfss["a"] = "0.1 mm"
 
 """ Create 3D Object ============================= """
 """ ============================================== """
