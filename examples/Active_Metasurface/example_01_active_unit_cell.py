@@ -16,116 +16,103 @@ hfss = HFSS(
 hfss["p"] = "7.5 mm"
 hfss["pz"] = "30 mm"
 hfss["t"] = "1 mm"
-hfss["rv"] = "0.1 mm"
-hfss["a"] = "0.1 mm"
+hfss["rv"] = "0.15 mm"
+hfss["rp"] = "0.3 mm"
+hfss["a"] = "6 mm"
+hfss["d"] = "2 mm"
+
 
 """ Create 3D Object ============================= """
 """ ============================================== """
 pla_color = "(0 128 255)"
-kapton_color = "(128 64 64)"
+sub_color = "(128 128 128)"
 silver_color = "(192 192 192)"
-inkject_color = "(128 128 128)"
 
-
+# Create airbox for periodic structure
 air_box = hfss.modeler.create_box(
-    position=["-p/2", "-p/2", "-pz/2-(h+d)"], 
-    size=["p", "p", "pz + 2*(h+d)"], 
+    position=["-p/2", "-p/2", "-pz/2-t/2"], 
+    size=["p", "p", "pz + t"], 
     name="AirBox", 
     transparency=1
 )
 
-kapton = hfss.modeler.create_box(
+# Create substrate
+substrate = hfss.modeler.create_box(
     position=["-p/2", "-p/2", "0"], 
-    size=["p", "p", "h"],
-    color=kapton_color, 
-    name="kapton"
+    size=["p", "p", "t"],
+    color=sub_color, 
+    name="Substrate",
+    material="FR4_epoxy"
 )
 
-# Top PLA
-pla_t01 = hfss.modeler.create_box(
-    position=["w2/2", "-p/2", "h"], 
-    size=["w1", "p", "d"], 
-     color=pla_color, 
-     name="pla_top_01", 
-     transparency=0.5
+# Create via
+via = hfss.modeler.create_cylinder(
+    center=["0", "d", "0"], 
+    radius="rv",
+    height="t",
+    color=sub_color, 
+    name="mid_via",
+    material="pec",
+    solve_inside=False
 )
 
-pla_t02 = hfss.modeler.create_box(
-    position=["-w1-w2/2", "-p/2", "h"], 
-    size=["w1", "p", "d"], 
-    color=pla_color, 
-    name="pla_top_02", 
-    transparency=0.5
+# Create Via
+via_list = []
+N_via = 10
+# via wall
+for iy in range(2):
+    for iv in range((N_via - 1) + 1):
+        wall = hfss.modeler.create_cylinder(
+            center=[f"-p/2+{iv}*p/({N_via-1})", f"{-1+2*iy}*p/2", "0"],
+            radius="rv", height="t",
+            name=f"via_{iy}_{iv}",
+            material="pec",
+            solve_inside=False
+        )
+        via_list.append(wall)
+
+via_wall = hfss.operator.unite(via_list)
+hfss.operator.intersect(
+    object_name=[via_wall, air_box], 
+    keep_original=True
 )
 
-# Bottom PLA
-pla_b01 = hfss.modeler.create_box(
-    position=["-p/2", "w2/2", "-d"], 
-    size=["p", "w1", "d"], 
-    color=pla_color, 
-    name="pla_bottom_01", 
-    transparency=0.5
+hfss.operator.subtract(
+    blank_parts=substrate, 
+    tool_parts=via_wall, 
+    keep_original=True
 )
 
-pla_b02 = hfss.modeler.create_box(
-    position=["-p/2", "-w1-w2/2", "-d"], 
-    size=["p", "w1", "d"], 
-    color=pla_color, 
-    name="pla_bottom_02", 
-    transparency=0.5
-)
 
 """ Create 2D Object ============================= """
 """ ============================================== """
 
-ring = hfss.modeler.create_circle(
-    position=["0", "0", "h"], 
-    radius="rc", name="ring", 
-    color=inkject_color
+patch = hfss.modeler.create_rectangle(
+    position=["-a/2", "-a/2", "t"], 
+    size=["a", "a"], name="patch",
 )
 
-ring0 = hfss.modeler.create_circle(
-    position=["0", "0", "h"], 
-    radius="rc-w2", name="ring_in"
+gnd = hfss.modeler.create_rectangle(
+    position=["-p/2", "-p/2", "0"], 
+    size=["p", "p"], name="Ground"
 )
 
-hfss.operator.subtract(blank_parts=ring, tool_parts=ring0)
-
-rect = hfss.modeler.create_rectangle(
-    position=["-w2/2", "-rc+w2/2", "h"], 
-    size=["w2", "2*rc-w2"], name="rect"
+port = hfss.modeler.create_circle(
+    center=["0", "d", "0"],
+    radius="rp",
+    name="Port"
 )
 
-# Create 2D from polyline
-l0 = hfss.modeler.create_center_point_arc(
-    pl_point=[["p*cos(alpha/2)", "p*sin(alpha/2)", "h"]], 
-    arc_center=["0", "0", "h"], 
-    arc_angle="-alpha", 
-    name="line0"
+hfss.operator.subtract(
+    blank_parts=gnd,
+    tool_parts=port,
+    keep_original=True
 )
 
-l1 = hfss.modeler.create_line(
-    pl_point=[["0", "0", "h"], ["p", "0", "h"]], 
-    name="line1"
+hfss.boundary.assign_perfect_E(
+    object_name=[patch, gnd],
+    bc_name="Perf_E",
 )
-
-l2 = hfss.modeler.create_line(
-    pl_point=[["0", "0", "h"], ["p", "0", "h"]], 
-    name="line2"
-)
-
-hfss.operator.rotate(object_name=l1, rotate_angle="alpha/2")
-hfss.operator.rotate(object_name=l2, rotate_angle="-alpha/2")
-hfss.operator.unite(object_name=[l0, l1, l2])
-hfss.operator.cover_line(l0)
-
-l3 = hfss.operator.duplicate_around_axis(object_name=l0, rotation_angle="180deg")
-hfss.operator.unite(object_name=[l0, l3])
-
-# Make final ring shape
-hfss.operator.subtract(blank_parts=ring, tool_parts=l0)
-hfss.operator.unite(object_name=[ring, rect])
-hfss.operator.rotate(object_name=ring, rotate_angle="beta")
 
 """ Assign materials =================================================================== """
 """ ==================================================================================== """

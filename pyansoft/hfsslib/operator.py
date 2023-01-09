@@ -43,7 +43,7 @@ class Operator:
         return object_name[0]
 
     def intersect(self, object_name: List[str], keep_original: bool = False):
-        parameters = ["NAME:Selections", "Selections:=", object_name]
+        parameters = ["NAME:Selections", "Selections:=", ",".join(object_name)]
         attributes = ["NAME:IntersectParameters", "KeepOriginals:=", keep_original]
 
         self.oEditor.Intersect(parameters, attributes)
