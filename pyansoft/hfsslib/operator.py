@@ -22,16 +22,18 @@ class Operator:
         return self.oEditor.GetVertexPosition(vertex_id)
 
     def subtract(
-        self, blank_parts: List[str], tool_parts: List[str], keep_original: bool = False
+        self,
+        blank_parts: List[str],
+        tool_parts: List[str], 
+        keep_original: bool = False
     ):
         parameters = [
             "NAME:Selections",
-            "Blank Parts:=",
-            blank_parts,
-            "Tool Parts:=",
-            tool_parts,
+            "Blank Parts:=", blank_parts,
+            "Tool Parts:=", ",".join(tool_parts),
         ]
-        attributes = ["NAME:SubtractParameters", "KeepOriginals:=", keep_original]
+        attributes = ["NAME:SubtractParameters",
+                      "KeepOriginals:=", keep_original]
 
         return self.oEditor.Subtract(parameters, attributes)
 
@@ -44,7 +46,8 @@ class Operator:
 
     def intersect(self, object_name: List[str], keep_original: bool = False):
         parameters = ["NAME:Selections", "Selections:=", ",".join(object_name)]
-        attributes = ["NAME:IntersectParameters", "KeepOriginals:=", keep_original]
+        attributes = ["NAME:IntersectParameters",
+                      "KeepOriginals:=", keep_original]
 
         self.oEditor.Intersect(parameters, attributes)
         return object_name[0]
@@ -158,7 +161,8 @@ class Operator:
             f"{number_clone}",
         ]
         param_03 = ["NAME:Options", "DuplicateAssignments:=", False]
-        tuple_name = self.oEditor.DuplicateAroundAxis(param_01, param_02, param_03)
+        tuple_name = self.oEditor.DuplicateAroundAxis(
+            param_01, param_02, param_03)
         return tuple_name[0]
 
     def cover_line(self, object_name: str):

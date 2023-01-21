@@ -38,27 +38,34 @@ air_box = hfss.modeler.create_box(
 
 # Create substrate
 substrate = hfss.modeler.create_box(
-    position=["-p/2", "-p/2", "0"], 
+    position=["-p/2", "-p/2", "0"],
     size=["p", "p", "t"],
     color=sub_color, 
     name="Substrate",
 )
 
 hole = hfss.modeler.create_box(
-    position=["-(p-w)/2", "-(p-w)/2", "t-h"], 
+    position=["-(p-w)/2", "-(p-w)/2", "t-h"],
     size=["p-w", "p-w", "h"],
-    color=sub_color, 
+    color=sub_color,
     name="Hole",
 )
 
-hfss.operator.subtract(blank_parts=substrate, tool_parts=hole)
+hole1 = hfss.modeler.create_box(
+    position=["-(p-w)/2", "-(p-w)/2", "0"],
+    size=["p-w", "p-w", "h"],
+    color=sub_color,
+    name="Hole1",
+)
+
+hfss.operator.subtract(blank_parts=substrate, tool_parts=[hole, hole1])
 
 
-""" Assign materials =================================================================== """
-""" ==================================================================================== """
+""" Assign materials ====================================================== """
+""" ======================================================================= """
 
-""" Periodic Boundary and Floquet Port ================================================= """
-""" ==================================================================================== """
+""" Periodic Boundary and Floquet Port ==================================== """
+""" ======================================================================= """
 
 face_id = hfss.operator.get_face_id(air_box)
 

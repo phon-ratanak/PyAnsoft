@@ -41,19 +41,13 @@ class Boundary:
     ):
         slave_parameters = [
             f"NAME:{name}",
-            "Faces:=",
-            [int(face_id)],
+            "Faces:=", [int(face_id)],
             ["NAME:CoordSysVector", "Origin:=", origin, "UPos:=", u_pos],
-            "ReverseV:=",
-            reverse_v,
-            "Master:=",
-            master,
-            "UseScanAngles:=",
-            saning_angles,
-            "Phi:=",
-            phi,
-            "Theta:=",
-            theta,
+            "ReverseV:=", reverse_v,
+            "Master:=", master,
+            "UseScanAngles:=", saning_angles,
+            "Phi:=", phi,
+            "Theta:=", theta,
         ]
         return self.oModule.AssignSlave(slave_parameters)
 
@@ -68,22 +62,14 @@ class Boundary:
 
         finite_cond_parameter = [
             f"NAME:{cond_name}",
-            "Objects:=",
-            object_name,
-            "UseMaterial:=",
-            True if material is not None else False,
-            "Material:=",
-            material,
-            "UseThickness:=",
-            False,
-            "Roughness:=",
-            roughness,
-            "InfGroundPlane:=",
-            infinite_ground_plane,
-            "IsTwoSided:=",
-            False,
-            "IsInternal:=",
-            True,
+            "Objects:=", object_name,
+            "UseMaterial:=", True if material is not None else False,
+            "Material:=", material,
+            "UseThickness:=", False,
+            "Roughness:=", roughness,
+            "InfGroundPlane:=", infinite_ground_plane,
+            "IsTwoSided:=", False,
+            "IsInternal:=", True,
         ]
         return self.oModule.AssignFiniteCond(finite_cond_parameter)
 
@@ -95,10 +81,8 @@ class Boundary:
     ):
         perfect_E_parameters = [
             f"NAME:{bc_name}",
-            "Objects:=",
-            object_name,
-            "InfGroundPlane:=",
-            infinite_ground,
+            "Objects:=", object_name,
+            "InfGroundPlane:=", infinite_ground,
         ]
         return self.oModule.AssignPerfectE(perfect_E_parameters)
 
@@ -109,8 +93,7 @@ class Boundary:
     ):
         perfect_H_parameters = [
             f"NAME:{bc_name}",
-            "Objects:=",
-            object_name,
+            "Objects:=", object_name,
         ]
         return self.oModule.AssignPerfectH(perfect_H_parameters)
 
@@ -130,20 +113,13 @@ class Boundary:
 
         RLC_parameters = [
             f"NAME:{rlc_name}",
-            "Objects:=",
-            object_name,
+            "Objects:=",            object_name,
             ["NAME:CurrentLine", "Start:=", start_point, "End:=", stop_point],
-            "UseResist:=",
-            R[0],
-            "Resistance:=",
-            R[1],
-            "UseInduct:=",
-            L[0],
-            "Inductance:=",
-            L[1],
-            "UseCap:=",
-            C[0],
-            "Capacitance:=",
-            C[1],
+            "UseResist:=", R[0],
+            "Resistance:=", R[1],
+            "UseInduct:=", L[0],
+            "Inductance:=", L[1],
+            "UseCap:=", C[0],
+            "Capacitance:=", C[1],
         ]
         return self.oModule.AssignLumpedRLC(RLC_parameters)

@@ -54,8 +54,8 @@ class Modeler:
 
         parameters = [
             "NAME:PolylineParameters",
-            "IsPolylineCovered:=",            True,
-            "IsPolylineClosed:=",            False,
+            "IsPolylineCovered:=", True,
+            "IsPolylineClosed:=", False,
             pl_points,
             pl_segments,
             pl_sections,
@@ -168,9 +168,9 @@ class Modeler:
             "IsCovered:=", True,
             "XStart:=", f"{position[0]}{unit}",
             "YStart:=", f"{position[1]}{unit}",
-            "ZStart:=", f"{position[2]}{unit}", 
-            "Width:=", f"{size[0]}{unit}", 
-            "Height:=", f"{size[1]}{unit}", 
+            "ZStart:=", f"{position[2]}{unit}",
+            "Width:=", f"{size[0]}{unit}",
+            "Height:=", f"{size[1]}{unit}",
             "WhichAxis:=", which_axis,
         ]
         attributes = [
