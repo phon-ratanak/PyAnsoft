@@ -24,9 +24,12 @@ class Operator:
     def subtract(
         self,
         blank_parts: List[str],
-        tool_parts: List[str], 
+        tool_parts: List[str],
         keep_original: bool = False
     ):
+        if type(tool_parts) != list:
+            tool_parts = [tool_parts]
+            
         parameters = [
             "NAME:Selections",
             "Blank Parts:=", blank_parts,

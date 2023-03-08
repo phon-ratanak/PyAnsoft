@@ -3,11 +3,13 @@ import sys
 from os.path import dirname, abspath
 sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
 
-# import library
 from pyansoft import HFSS
 
+
+# import library
+
 hfss = HFSS(
-    project_name="Active_Metasurface", 
+    project_name="Active_Metasurface",
     design_name="Unit_Cell",
 )
 
@@ -30,37 +32,40 @@ via_color = "(192 192 192)"
 cond_color = "(192 192 192)"
 
 # Diode color RLC lumped component
-R_color  = "(192 192 192)"
-L_color  = "(192 192 192)"
-C_color  = "(192 192 192)"
+R_color = "(192 192 192)"
+L_color = "(192 192 192)"
+C_color = "(192 192 192)"
 
 """ Create 3D Object ============================= """
 """ ============================================== """
 
 # Create airbox
+
+
 def create_air_box(Nx, Ny, dx, dy):
     return hfss.modeler.create_box(
-        position=["-p/2", "-p/2", "-pz/2-t/2"], 
-        size=["p", "p", "pz + t"], 
-        name="AirBox", 
+        position=["-p/2", "-p/2", "-pz/2-t/2"],
+        size=["p", "p", "pz + t"],
+        name="AirBox",
         transparency=1
     )
 
+
 # Create substrate
 substrate = hfss.modeler.create_box(
-    position=["-p/2", "-p/2", "0"], 
+    position=["-p/2", "-p/2", "0"],
     size=["p", "p", "t"],
-    color=sub_color, 
+    color=sub_color,
     name="Substrate",
     material="FR4_epoxy"
 )
 
 # Create via
 via = hfss.modeler.create_cylinder(
-    center=["0", "d", "0"], 
+    center=["0", "d", "0"],
     radius="rv",
     height="t",
-    color=sub_color, 
+    color=sub_color,
     name="mid_via",
     material="pec",
     solve_inside=False
@@ -83,13 +88,13 @@ for iy in range(2):
 
 via_wall = hfss.operator.unite(via_list)
 hfss.operator.intersect(
-    object_name=[via_wall, air_box], 
+    object_name=[via_wall, air_box],
     keep_original=True
 )
 
 hfss.operator.subtract(
-    blank_parts=substrate, 
-    tool_parts=via_wall, 
+    blank_parts=substrate,
+    tool_parts=via_wall,
     keep_original=True
 )
 
