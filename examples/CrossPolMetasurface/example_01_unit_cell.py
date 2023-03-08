@@ -17,6 +17,7 @@ hfss["p"] = "3.2 mm"
 hfss["pz"] = "10 mm"
 hfss["h"] = "0.125 mm"
 hfss["rc"] = "1.5 mm"
+hfss["w"] = "0.5 mm"
 hfss["w1"] = "0.8 mm"
 hfss["w2"] = "0.6 mm"
 hfss["d"] = "1.3 mm"
@@ -91,14 +92,14 @@ ring = hfss.modeler.create_circle(
 
 ring0 = hfss.modeler.create_circle(
     center=["0", "0", "h"],
-    radius="rc-w2", name="ring_in"
+    radius="rc-w", name="ring_in"
 )
 
 hfss.operator.subtract(blank_parts=ring, tool_parts=ring0)
 
 rect = hfss.modeler.create_rectangle(
-    position=["-w2/2", "-rc+w2/2", "h"],
-    size=["w2", "2*rc-w2"], name="rect"
+    position=["-w/2", "-rc+w/2", "h"],
+    size=["w", "2*rc-w"], name="rect"
 )
 
 # Create 2D from polyline
@@ -121,6 +122,10 @@ l2 = hfss.modeler.create_line(
 
 hfss.operator.rotate(object_name=l1, rotate_angle="alpha/2")
 hfss.operator.rotate(object_name=l2, rotate_angle="-alpha/2")
+hfss.operator.move(object_name=l0, position=['w/2', 0, 0])
+hfss.operator.move(object_name=l1, position=['w/2', 0, 0])
+hfss.operator.move(object_name=l2, position=['w/2', 0, 0])
+
 hfss.operator.unite(object_name=[l0, l1, l2])
 hfss.operator.cover_line(l0)
 
